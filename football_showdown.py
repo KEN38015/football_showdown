@@ -185,7 +185,8 @@ def get_action(options : list, *, err_msg : str = None , prompt : str = "Select 
 	delay()
 	print(prompt)
 	choice = input()
-	return choice if choice in list(map(str, options)) else get_action(options, err_msg="Choose only from the given list!")
+	delay()
+	return choice if choice in list(map(str, options)) else get_action(options, err_msg="Choose only from the given options!")
 
 
 
@@ -211,25 +212,27 @@ def player_turn() -> None:
 			print(f"\t{k}. {v}")
 		match get_action(s.keys()):
 			case "normal":
-				print(f"You used {chosen_player.attack_name} to deal {chosen_player.damage} to {chosen_enemy.name}!")
+				print(f"\nYou used {chosen_player.attack_name} to deal {chosen_player.damage} to {chosen_enemy.name}!")
 				chosen_enemy.take_damage(chosen_player.damage)
 				print(f"{chosen_enemy.name} is now on {chosen_enemy.hp} HP!")
 				if chosen_enemy.hp <= 0:
-					print(f"You defeated {chosen_enemy.name}!\n")
+					delay()
+					print(f"\nYou defeated {chosen_enemy.name}!\n")
+					delay()
 				break
 			case "special":
-				print(f"You used {chosen_player.special_name} to deal {chosen_player.special_damage} DP to {chosen_enemy.name}!")
+				print(f"\nYou used {chosen_player.special_name} to deal {chosen_player.special_damage} DP to {chosen_enemy.name}!")
 				chosen_enemy.take_damage(chosen_player.special_attack())
 				delay()
 				print(f"{chosen_enemy.name} is now on {chosen_enemy.hp} HP!")
 				if chosen_enemy.hp <= 0:
 					delay()
-					print(f"You defeated {chosen_enemy.name}!")
+					print(f"\nYou defeated {chosen_enemy.name}!")
 				break
 			case "check":
 				delay()
-				print(f"{chosen_enemy.name} has {chosen_enemy.hp} HP remaining.\n\n")
-				delay(1.4)
+				print(f"\n{chosen_enemy.name} has {chosen_enemy.hp} HP remaining.\n\n")
+				delay(1.1)
 	print(end="\n\n")
 	delay()
 
@@ -246,15 +249,16 @@ def enemy_turn() -> None:
 
 		if (chosen_player.hp <= chosen_enemy.special_damage and chosen_enemy.special_uses) or chosen_enemy.special_uses >= 2:
 			chosen_player.take_damage(chosen_enemy.special_attack())
+			delay()
 			print(f"Enemy used {chosen_enemy.special_name} to deal DP {chosen_enemy.special_damage} to {chosen_player.name}!")
 			delay()
-			chosen_player.take_damage(chosen_enemy.damage)
 			print(f"{chosen_player.name} is now on {chosen_player.hp} HP!")
 			if chosen_player.hp <= 0:
 				delay()
 				print(f"Enemy defeated {chosen_player.name}!")
+				delay()
 			break
-
+		delay()
 		print(f"Enemy used {chosen_enemy.attack_name} to deal {chosen_enemy.damage} DP to {chosen_player.name}!")
 		delay()
 		chosen_player.take_damage(chosen_enemy.damage)
@@ -262,6 +266,7 @@ def enemy_turn() -> None:
 		if chosen_player.hp <= 0:
 			delay()
 			print(f"Enemy defeated {chosen_player.name}!")
+			delay()
 		break
 
 
@@ -270,30 +275,28 @@ def enemy_turn() -> None:
 	delay()
 
 
-def player_substitution(player_team : List[Player], selected : Player) -> None:
+def player_substitution(player_team : List[Player]) -> None:
+	delay(1)
 	global chosen_player
 	choice = None
-	if selected.is_alive():
-		while (choice := input("Substitution?\n").lower()) not in ["yes", "no"]:
+	if chosen_player.is_alive():
+		while (choice := input(f"Substitution?\n{chosen_player.name} has {chosen_player.hp} HP remaining.\n").lower()) not in ["yes", "no"]:
 			print("yes/no only!")
 
-	if choice == "yes" or not selected.is_alive():
-		e.name = choose_player(player_team).name
-		if e != chosen_enemy:
-			print(f"Substitution on the field for Home team, going off is {selected.name}")
+	if choice == "yes" or not chosen_player.is_alive():
+		if (e := choose_player(player_team)).name != chosen_player.name:
+			print(f"Substitution on the field for Home team, going off is {chosen_player.name}")
 			delay()
 			print(f"Replacing him, going on for Home team is, {e.name}!")
 			chosen_player = e
 		else:
 			print(f"Continued using {chosen_player}!")
 
-
+	delay(1)
 
 
 def battle_loop(p_team : List[Player], e_team : List[Player]) -> bool:
 	global player_team, enemy_team, chosen_player, chosen_enemy
-	player_team = p_team[:]
-	enemy_team = e_team[:]
 	cycle = 0
 	print("Choose your starting player!")
 	delay()
@@ -305,7 +308,7 @@ def battle_loop(p_team : List[Player], e_team : List[Player]) -> bool:
 	n = 60
 	while player_team and enemy_team:
 		if cycle:
-			player_substitution(player_team, chosen_player)
+			player_substitution(player_team)
 			delay(1)
 			if (tmp := enemy_choose(enemy_team, chosen_enemy, chosen_player)) != chosen_enemy:
 				print(f"Substitution on the field for Away team, going off is {chosen_enemy.name}")
@@ -359,6 +362,14 @@ def main() -> None:
 	player_won = battle_loop(player_team, enemy_team)
 	print("&"*50, "\t\tYOU WIN!!!" if player_won else "\t\tYOU LOST", "&"*50, sep="\n")
 
+	while (again := input("Play again? (yes/no)\n").lower()) not in ("yes", "no"):
+		print("yes/no only!")
+
+	if again == "yes":
+		print("\n\n\n"*10)
+		main()
+
+	print("Goodbye!")
 
 	return
 
