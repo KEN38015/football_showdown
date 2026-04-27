@@ -42,62 +42,154 @@ d = 0.8
 players = {
 	"Nico O'Reilly" : [
 		"Manchester City", 
-		80, 
-		["Nutmeg", 15], 
-		["Header", 35, 2]
+		75, 
+		["Dribble", 15], 
+		["Header", 25, 3]
 	],
 
 	"Erling Haaland" : [
 		"Manchester City", 
-		130, 
+		130,
 		["Tap In", 20], 
-		["Far Post Header", 45, 2]
+		["Far Post Header", 35, 2]
 	],
 
 	"Rayan Cherki" : [
 		"Manchester City",
-		70, 
-		["Rabona", 20], 
-		["Juggling", 45, 1]
+		85,
+		["Time Wasting", 20], 
+		["Rabona", 50, 1]
 	],
 
 	"Tijjani Reijnders" : [
 		"Manchester City", 
-		90, 
-		["Shot", 15], 
-		["Yellow Card", 70, 1]
+		95, 
+		["Dribble", 17], 
+		["Through Pass", 70, 1]
 	],
 
 	"Kevin De Bruyne" : [
 		"Manchester City", 
-		105, 
-		["Long-Distance Pass", 30], 
-		["Curled Header", 35, 3]
+		110, 
+		["Whipped Cross", 30], 
+		["Long Low-Driven Pass", 35, 3]
 	],
+
+
+
 
 	"Dominik Szoboszlai" : [
-		"Liverpool", 
-		100, 
+		"Liverpool",	
+		105, 
 		["Curved Shot", 20], 
-		["40-yard Banger", 60, 1]
+		["40-yard Banger", 55, 1]
 	],
 
-	# "Ryan Gravenberch" : ["Liverpool"],
-	# "Mohamed Salah" : ["Liverpool"],
-	# "Virgil Van Dijk" : ["Liverpool"],
-	# "Slippy G" : ["Liverpool"],
+	"Ryan Gravenberch" : [
+		"Liverpool",
+		95,
+		["Rough Tackle", 20],
+		["Yellow Card", 70, 1]
+	],
 
-	# "Cole Palmer" : ["Chelsea"],
-	# "Alejandro Garnacho" : ["Chelsea"],
-	# "Enzo Fernández" : ["Chelsea"],
-	# "Marc Cucurella" : ["Chelsea"],
-	# "Didier Drogba" : ["Chelsea"],
+	"Mohamed Salah" : [
+		"Liverpool",
+		85,
+		["Sprint", 20],
+		["Solo Dribble", 45, 2]
+	],
 
-	# "Bruno Fernandes" : ["Manchester United"],
-	# "Bryan Mbuemo" : ["Manchester United"],
-	# "Matheus Cunha" : ["Manchester United"],
-	# "Benjamin Šeško" : ["Manchester United"],
-	# "Cristiano Ronaldo" : ["Manchester United"],
+	"Virgil Van Dijk" : [
+		"Liverpool",
+		142,
+		["Tackle", 15],
+		["Injury Time Header", 50, 1]
+	],
+
+	"Slippy G" : [
+		"Liverpool",
+		95,
+		["Heavenly Pass", 25],
+		["Half Field Volley", 80, 1]
+	],
+
+
+
+
+	"Cole Palmer" : [
+		"Chelsea",
+		80,
+		["Assist", 23],
+		["Ice Cold Finish", 30, 2]
+	],
+
+	"Alejandro Garnacho" : [
+		"Chelsea",
+		98,
+		["Pressing", 19],
+		["Cut in", 40, 3]
+	],
+
+	"Enzo Fernández" : [
+		"Chelsea",
+		95,
+		["Escape Pressure", 15],
+		["Switch Play", 30, 5],
+	],
+
+
+	"Marc Cucurella" : [
+		"Chelsea",
+		65,
+		["Hard Tackle", 20],
+		["50/50 Challenge", (lambda: random.randint(0, 50))(), 4]
+	],
+
+	"Didier Drogba" : [
+		"Chelsea",
+		100,
+		["The Flying Ivorian", 30],
+		["Clutch Goal", 50, 1]
+	],
+
+
+
+
+	"Bruno Fernandes" : [
+		"Manchester United",
+		80,
+		["Through Pass", 18],
+		["Top Bins Free Kick", 45, 2]
+
+	],
+
+	"Bryan Mbuemo" : [
+		"Manchester United",
+		105,
+		["Pressing", 15],
+		["Low Bins Finish", 35, 7]
+	],
+
+	"Matheus Cunha" : [
+		"Manchester United",
+		87,
+		["Dribble", 15],
+		["Banger", 50, 2]
+	],
+
+	"Benjamin Šeško" : [
+		"Manchester United",
+		100,
+		["Pace Abuse", 5],
+		["The Flying Slovenian", 60, 2]
+	],
+
+	"Cristiano Ronaldo" : [
+		"Manchester United",
+		100,
+		["Mr. Tap In", 25],
+		["Bang Scorer- ahem Score Bangers", 90, 1]
+	],
 }
 
 
@@ -290,7 +382,7 @@ def player_substitution(player_team : List[Player]) -> None:
 			print(f"Replacing him, going on for Home team is, {e.name}!")
 			chosen_player = e
 		else:
-			print(f"Continued using {chosen_player}!")
+			print(f"Continued using {chosen_player.name}!")
 
 	delay(1)
 
@@ -360,13 +452,15 @@ def main() -> None:
 	print("\n\n")
 	player_team, enemy_team = create_teams()
 	player_won = battle_loop(player_team, enemy_team)
-	print("&"*50, "\t\tYOU WIN!!!" if player_won else "\t\tYOU LOST", "&"*50, sep="\n")
-
+	delay(2)
+	print("&"*50, "\t\tYOU WIN!!!" if player_won else "\t\tYOU LOSE", "&"*50, sep="\n")
+	delay(3)
 	while (again := input("Play again? (yes/no)\n").lower()) not in ("yes", "no"):
 		print("yes/no only!")
 
 	if again == "yes":
 		print("\n\n\n"*10)
+		delay(1)
 		main()
 
 	print("Goodbye!")
