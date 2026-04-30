@@ -1,6 +1,7 @@
 import time
 import random
 import sys
+from ball import display_ball
 
 
 class Player:
@@ -39,19 +40,27 @@ d = 0.8
 
 # format {name : [club, max_hp, [attack_info, damage], [special name, special damage, special uses]]}
 
-players = {
-	"Nico O'Reilly" : [
+
+
+
+
+players = (
+
+	# premier league
+	Player(
+		"Nico O'Reilly",
 		"Manchester City", 
 		75, 
 		["Dribble", 15], 
 		["Header", 25, 3]
-	],
+	),
+	
 
 	"Erling Haaland" : [
 		"Manchester City", 
 		130,
-		["Tap In", 20], 
-		["Far Post Header", 35, 2]
+		["Tap In", 17], 
+		["Far Post Header", 42, 3]
 	],
 
 	"Rayan Cherki" : [
@@ -65,7 +74,7 @@ players = {
 		"Manchester City", 
 		95, 
 		["Dribble", 17], 
-		["Through Pass", 70, 1]
+		["Through Pass", 62, 1]
 	],
 
 	"Kevin De Bruyne" : [
@@ -82,7 +91,7 @@ players = {
 		"Liverpool",	
 		105, 
 		["Curved Shot", 20], 
-		["40-yard Banger", 55, 1]
+		["40-yard Banger", 75, 1]
 	],
 
 	"Ryan Gravenberch" : [
@@ -134,7 +143,7 @@ players = {
 		"Chelsea",
 		95,
 		["Escape Pressure", 15],
-		["Switch Play", 30, 5],
+		["Switch Play", 30, 4],
 	],
 
 
@@ -149,7 +158,7 @@ players = {
 		"Chelsea",
 		100,
 		["The Flying Ivorian", 30],
-		["Clutch Goal", 50, 1]
+		["Clutch Goal", 75, 1]
 	],
 
 
@@ -170,11 +179,11 @@ players = {
 		["Low Bins Finish", 35, 7]
 	],
 
-	"Matheus Cunha" : [
+	"Casemiro" : [
 		"Manchester United",
-		87,
-		["Dribble", 15],
-		["Banger", 50, 2]
+		100,
+		["Pass", 15],
+		["Header", 67, 1]
 	],
 
 	"Benjamin Šeško" : [
@@ -190,7 +199,154 @@ players = {
 		["Mr. Tap In", 25],
 		["Bang Scorer- ahem Score Bangers", 90, 1]
 	],
-}
+
+
+
+
+
+
+
+
+
+	# la lig(m)a
+	"Jude Bellingham" : [
+		"Real Madrid",
+		110,
+		["Elegant Pass", 28],
+		["Composed Finish", 30, 1]
+	],
+
+	"Federico Valverde" : [
+		"Real Madrid",
+		80,
+		["Full Field Sprint", 10],
+		["Rocket Launcher", 90, 1]
+	],
+
+	"Antonio Rüdiger" : [
+		"Real Madrid",
+		130,
+		["Aggresive Challenge", 23],
+		["Crab Defending", 50, 2]
+	],
+
+	"Dictator Mbappé" : [
+		"Real Madrid",
+		100,
+		["Explosive Sprint", 20],
+		["Tap In", 40, 3]
+	],
+
+	"Sergio Ramos" : [
+		"Real Madrid",
+		120,
+		["Powerful Header", 25],
+		["Fatality", 200, 1]
+	],
+
+
+
+
+
+
+
+	"Lamine Yamal" : [
+		"VARcelona",
+		85,
+		["Humiliation", 20],
+		["Top Bins Curler", 45, 3]
+	],
+
+	"Pedri" : [
+		"VARcelona",
+		80,
+		["La Croqueta", 12],
+		["Ariel Through Pass", 40, 4]
+	],
+
+	"Robert Lewandoski" : [
+		"VARcelona",
+		118,
+		["Dribble", 5],
+		["The Flying Polish", 40, 4]
+	],
+	
+	"Joules Koundé" : [
+		"VARcelona",
+		103,
+		["Acceleration", 10],
+		["Sliding Tackle", 60, 2]
+	],
+
+	"Lionel Messi" : [
+		"VARcelona",
+		60,
+		["La Croqueta", 30],
+		["Chip", 50, 6]
+	],
+
+
+
+
+
+	"Julián Álvarez" : [
+		"Atlético de Madrid",
+		65,
+		["Sprint", 5],
+		["Free Kick", 55, 3]
+	],
+
+
+	"Antoine Griezmann" : [
+		"Atlético de Madrid",
+		98,
+		["Griddy", 23],
+		["sIX SeVEn", 67, 2]
+	],
+
+	"Macros Llorente" : [
+		"Atlético de Madrid",
+		93,
+		["Chase", 30],
+		["Whipped Cross", 36, 2]
+	],
+
+	"Giuliano Simeone" : [
+		"Atlético de Madrid",
+		93,
+		["Run Down", 30],
+		["Whipped Cross", 36, 2]
+	],
+
+	"Fernando Torres" : [
+		"Atlético de Madrid",
+		115,
+		["Low Bins", 20],
+		["Towering Header", 50, 2],
+	],
+
+
+
+
+
+
+
+	"Gerard Moreno" : [
+		"Villarreal",
+		99,
+		["Curled Shot", 15],
+		["Lethal Assist", 45, 3],
+	],
+	
+)
+
+
+
+
+
+
+
+
 
 
 def delay(t : float = 0.8) -> None:
@@ -410,7 +566,7 @@ def battle_loop(p_team : List[Player], e_team : List[Player]) -> bool:
 		delay()
 		cycle += 1
 
-		print("!"*n, f"\tROUND {cycle}    -    {chosen_player.name.upper()} VS. {chosen_enemy.name.upper()}", "!"*n, sep="\n", end="\n\n\n")
+		print("\n\n\n"+"!"*n, f"\tROUND {cycle}    -    {chosen_player.name.upper()} VS. {chosen_enemy.name.upper()}", "!"*n, sep="\n", end="\n\n\n")
 		delay(2)
 		
 
@@ -447,27 +603,32 @@ chosen_enemy = None
 
 def main() -> None:
 	global player_team, enemy_team
-	print("*"*40, "*"*40, "\n\t  WELCOME TO FOOTBALL SHOWDOWN\n", "*"*40, "*"*40, sep="\n")
+	print("\n\n\n"+"*"*40, "*"*40, "\n\t  WELCOME TO FOOTBALL SHOWDOWN\n", "*"*40, "*"*40, sep="\n")
 	delay(2)
 	print("\n\n")
 	player_team, enemy_team = create_teams()
 	player_won = battle_loop(player_team, enemy_team)
 	delay(2)
-	print("&"*50, "\t\tYOU WIN!!!" if player_won else "\t\tYOU LOSE", "&"*50, sep="\n")
+	print("&"*50, "\t\t\t\tYOU WIN!!!" if player_won else "\t\tYOU LOSE", "&"*50, sep="\n")
 	delay(3)
 	while (again := input("Play again? (yes/no)\n").lower()) not in ("yes", "no"):
 		print("yes/no only!")
 
 	if again == "yes":
-		print("\n\n\n"*10)
+		print("\n\n\n\n\n"*10)
 		delay(1)
 		main()
 
-	print("Goodbye!")
+	print("\n\n\nGoodbye!")
 
 	return
 
-
-main()
+if __name__ == "__main__":
+	display_ball()
+	delay()
+	print("Look at this!")
+	delay(5)
+	print("\n\n\n\n\n"*5)
+	main()
 
 
