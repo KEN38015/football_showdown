@@ -1,8 +1,14 @@
 import time
 import random
 import sys
-from ball import display_ball
 
+has_ball = False
+try:
+	from ball import display_ball
+except ModuleNotFoundError:
+	pass
+else:
+	has_ball = True
 
 class Player:
 	def __init__(self, name : str, club : str, max_hp : int, attack_info : List[str | int], special_info : List[str | int]) -> None:
@@ -20,9 +26,6 @@ class Player:
 	def take_damage(self, amount : int) -> None:
 		self.hp = (self.hp - amount if self.hp >= amount else 0)
 
-	# there aint no encapsulation for ts
-	# def normal_attack(self) -> int:
-	# 	return self.damage
 
 	def special_attack(self) -> int:
 		if self.special_uses:
@@ -48,6 +51,7 @@ players = (
 
 	# premier league
 	Player(
+
 		"Nico O'Reilly",
 		"Manchester City", 
 		75, 
@@ -56,149 +60,157 @@ players = (
 	),
 	
 
-	"Erling Haaland" : [
+	Player(
+		"Erling Haaland",
 		"Manchester City", 
 		130,
 		["Tap In", 17], 
 		["Far Post Header", 42, 3]
-	],
-
-	"Rayan Cherki" : [
+	),
+	Player(
+		"Rayan Cherki",
 		"Manchester City",
 		85,
 		["Time Wasting", 20], 
 		["Rabona", 50, 1]
-	],
-
-	"Tijjani Reijnders" : [
+	),
+	Player(
+		"Tijjani Reijnders",
 		"Manchester City", 
 		95, 
 		["Dribble", 17], 
 		["Through Pass", 62, 1]
-	],
-
-	"Kevin De Bruyne" : [
+	),
+	Player(
+		"Kevin De Bruyne",
 		"Manchester City", 
 		110, 
 		["Whipped Cross", 30], 
 		["Long Low-Driven Pass", 35, 3]
-	],
+	),
 
 
 
-
-	"Dominik Szoboszlai" : [
+	Player(
+		"Dominik Szoboszlai",
 		"Liverpool",	
 		105, 
 		["Curved Shot", 20], 
 		["40-yard Banger", 75, 1]
-	],
-
-	"Ryan Gravenberch" : [
+	),
+	Player(
+		"Ryan Gravenberch",
 		"Liverpool",
 		95,
 		["Rough Tackle", 20],
 		["Yellow Card", 70, 1]
-	],
-
-	"Mohamed Salah" : [
+	),
+	Player(
+		"Mohamed Salah",
 		"Liverpool",
 		85,
 		["Sprint", 20],
 		["Solo Dribble", 45, 2]
-	],
-
-	"Virgil Van Dijk" : [
+	),
+	Player(
+		"Virgil Van Dijk",
 		"Liverpool",
 		142,
 		["Tackle", 15],
 		["Injury Time Header", 50, 1]
-	],
-
-	"Slippy G" : [
+	),
+	Player(
+		"Slippy G",
 		"Liverpool",
 		95,
 		["Heavenly Pass", 25],
 		["Half Field Volley", 80, 1]
-	],
+	),
 
 
 
-
-	"Cole Palmer" : [
+	Player(
+		"Cole Palmer",
 		"Chelsea",
 		80,
 		["Assist", 23],
 		["Ice Cold Finish", 30, 2]
-	],
+	),
 
-	"Alejandro Garnacho" : [
+
+	Player(
+	"Alejandro Garnacho",
 		"Chelsea",
 		98,
 		["Pressing", 19],
 		["Cut in", 40, 3]
-	],
+	),
 
-	"Enzo Fernández" : [
+	Player(
+		"Enzo Fernández",
 		"Chelsea",
 		95,
 		["Escape Pressure", 15],
 		["Switch Play", 30, 4],
-	],
+	),
 
-
-	"Marc Cucurella" : [
+	Player(
+		"Marc Cucurella",
 		"Chelsea",
 		65,
 		["Hard Tackle", 20],
 		["50/50 Challenge", (lambda: random.randint(0, 50))(), 4]
-	],
+	),
 
-	"Didier Drogba" : [
+	Player(
+		"Didier Drogba",
 		"Chelsea",
 		100,
 		["The Flying Ivorian", 30],
 		["Clutch Goal", 75, 1]
-	],
+	),
 
 
 
-
-	"Bruno Fernandes" : [
+	Player(
+		"Bruno Fernandes",
 		"Manchester United",
 		80,
 		["Through Pass", 18],
 		["Top Bins Free Kick", 45, 2]
 
-	],
+	),
 
-	"Bryan Mbuemo" : [
+	Player(
+		"Bryan Mbuemo",
 		"Manchester United",
 		105,
 		["Pressing", 15],
 		["Low Bins Finish", 35, 7]
-	],
-
-	"Casemiro" : [
+	),
+	Player(
+		"Casemiro",
 		"Manchester United",
 		100,
 		["Pass", 15],
 		["Header", 67, 1]
-	],
+	),
 
-	"Benjamin Šeško" : [
+	Player(
+		"Benjamin Šeško",
 		"Manchester United",
 		100,
 		["Pace Abuse", 5],
 		["The Flying Slovenian", 60, 2]
-	],
+	),
 
-	"Cristiano Ronaldo" : [
+	Player(
+		"Cristiano Ronaldo",
 		"Manchester United",
 		100,
 		["Mr. Tap In", 25],
 		["Bang Scorer- ahem Score Bangers", 90, 1]
-	],
+	),
 
 
 
@@ -209,121 +221,133 @@ players = (
 
 
 	# la lig(m)a
-	"Jude Bellingham" : [
+	Player(
+		"Jude Bellingham",
 		"Real Madrid",
 		110,
 		["Elegant Pass", 28],
 		["Composed Finish", 30, 1]
-	],
+	),
 
-	"Federico Valverde" : [
+	Player(
+		"Federico Valverde",
 		"Real Madrid",
 		80,
 		["Full Field Sprint", 10],
 		["Rocket Launcher", 90, 1]
-	],
+	),
 
-	"Antonio Rüdiger" : [
+	Player(
+		"Antonio Rüdiger",
 		"Real Madrid",
 		130,
 		["Aggresive Challenge", 23],
 		["Crab Defending", 50, 2]
-	],
+	),
 
-	"Dictator Mbappé" : [
+	Player(
+		"Dictator Mbappé",
 		"Real Madrid",
 		100,
 		["Explosive Sprint", 20],
 		["Tap In", 40, 3]
-	],
+	),
 
-	"Sergio Ramos" : [
+	Player(
+		"Sergio Ramos",
 		"Real Madrid",
 		120,
-		["Powerful Header", 25],
+		["Tackle", 5],
 		["Fatality", 200, 1]
-	],
+	),
 
 
 
 
 
 
-
-	"Lamine Yamal" : [
+	Player(
+		"Lamine Yamal",
 		"VARcelona",
 		85,
 		["Humiliation", 20],
 		["Top Bins Curler", 45, 3]
-	],
+	),
 
-	"Pedri" : [
+	Player(
+		"Pedri",
 		"VARcelona",
 		80,
 		["La Croqueta", 12],
 		["Ariel Through Pass", 40, 4]
-	],
+	),
 
-	"Robert Lewandoski" : [
+	Player(
+		"Robert Lewandoski",
 		"VARcelona",
 		118,
 		["Dribble", 5],
 		["The Flying Polish", 40, 4]
-	],
+	),
 	
-	"Joules Koundé" : [
+	Player(
+		"Jules Koundé",
 		"VARcelona",
 		103,
 		["Acceleration", 10],
 		["Sliding Tackle", 60, 2]
-	],
+	),
 
-	"Lionel Messi" : [
+	Player(
+		"Lionel Messi",
 		"VARcelona",
 		60,
 		["La Croqueta", 30],
 		["Chip", 50, 6]
-	],
+	),
 
 
 
 
-
-	"Julián Álvarez" : [
+	Player(
+		"Julián Álvarez",
 		"Atlético de Madrid",
 		65,
 		["Sprint", 5],
 		["Free Kick", 55, 3]
-	],
+	),
 
-
-	"Antoine Griezmann" : [
+	Player(
+		"Antoine Griezmann",
 		"Atlético de Madrid",
 		98,
 		["Griddy", 23],
 		["sIX SeVEn", 67, 2]
-	],
+	),
 
-	"Macros Llorente" : [
+	Player(
+		"Macros Llorente",
 		"Atlético de Madrid",
 		93,
 		["Chase", 30],
 		["Whipped Cross", 36, 2]
-	],
+	),
 
-	"Giuliano Simeone" : [
+	Player(
+		"Giuliano Simeone",
 		"Atlético de Madrid",
 		93,
 		["Run Down", 30],
 		["Whipped Cross", 36, 2]
-	],
+	),
 
-	"Fernando Torres" : [
+	Player(
+		"Fernando Torres",
 		"Atlético de Madrid",
 		115,
 		["Low Bins", 20],
 		["Towering Header", 50, 2],
-	],
+	),
 
 
 
@@ -331,13 +355,6 @@ players = (
 
 
 
-	"Gerard Moreno" : [
-		"Villarreal",
-		99,
-		["Curled Shot", 15],
-		["Lethal Assist", 45, 3],
-	],
-	
 )
 
 
@@ -360,12 +377,12 @@ def create_teams() -> Tuple[List[Monster]]:
 	for a in range(2):
 		for i in range(3):
 			# check no dupes
-			while (chosen := random.choice(list(players.keys()))) in list(map(lambda x: x.name, player_team + enemy_team)):
-				chosen = random.choice(list(players.keys()))
+			while (chosen := random.choice(players)) in list(map(lambda x: x.name, player_team + enemy_team)):
+				chosen = random.choice(players)
 			if a-1: # is 0
-				player_team.append(Player(chosen, *players[chosen]))
+				player_team.append(chosen)
 			else:
-				enemy_team.append(Player(chosen, *players[chosen]))
+				enemy_team.append(chosen)
 			print(".", end="")
 			delay()
 		print()
@@ -624,11 +641,12 @@ def main() -> None:
 	return
 
 if __name__ == "__main__":
-	display_ball()
-	delay()
-	print("Look at this!")
-	delay(5)
-	print("\n\n\n\n\n"*5)
+	if has_ball:
+		display_ball()
+		delay()
+		print("Look at this!")
+		delay(5)
+		print("\n\n\n\n\n"*5)
 	main()
 
 
