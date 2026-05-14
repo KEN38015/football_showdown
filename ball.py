@@ -1,12 +1,4 @@
-"""
-soccer_ball.py — prints a round ASCII soccer ball to the terminal.
 
-The key fix: terminal characters are ~2x taller than wide, so a naive
-circle looks oval. We compensate by stretching the horizontal mapping
-by the character aspect ratio (CA ≈ 2.05), giving a true circle.
-
-Run:  python3 soccer_ball.py
-"""
 import math
 
 
