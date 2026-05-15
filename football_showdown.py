@@ -27,6 +27,7 @@ class Player:
 		self.attack_name, self.damage = attack_info
 		self.attack_info = attack_info
 		self.special_name, self.special_damage, self.special_uses = special_info
+		self.init_special_uses = self.special_uses
 		self.special_info = special_info
 		self.level_up_info = level_up_info
 		self.xp_threshold, self.thershold_mod, self.max_lvl, self.hp_mod, self.dmg_mod = level_up_info
@@ -93,7 +94,8 @@ class Player:
 		p._lvl = lvl
 		return p
 
-
+	# def refresh() -> None:
+	# 	self.special_uses = self.init_special_uses
 
 	def __str__(self) -> str:
 		l = 30
@@ -839,18 +841,18 @@ def battle_loop() -> bool:
 
 
 
-player_team = None
-enemy_team = None
-chosen_player = None
-chosen_enemy = None
+player_team : Player = None
+enemy_team : Player = None
+chosen_player : Player = None
+chosen_enemy : Player = None
 
 continue_data : str = None
 
 
-players_per_team = 20
+players_per_team = 5
 
 seed : int = 0
-seed_index : int = 1
+seed_index : int = 0
 
 
 
@@ -882,7 +884,7 @@ def generate_seed() -> None:
 	seed = random.randint(0, 2**128-1)
 
 
-def ask_save(save_data : List) -> None:
+def ask_save(save_data : list) -> None:
 	delay(1)
 	while (choice := input("\n\nSave progress up to this point?\nAgreement would override the previous save file\n")) not in ("yes", "no"):
 		print("yes/no only!")
@@ -917,7 +919,7 @@ def save_progress(save_data : List) -> None:
 
 		with open("seed.bin", "w") as seed_file:
 			seed_key.generate_key(257)
-			seed_file.write(to_binary(seed_key.encrypted(f"{seed:0128}\n{seed_index:0128}")))
+			seed_file.write(to_binary(seed_key.encrypted(f"{seed:0128}\n{seed_index-1:0128}")))
 		with open("seed_key.bin", "w") as seed_key_file:
 			seed_key_file.write(seed_key.to_binary())
 
@@ -1017,9 +1019,9 @@ def award(win : bool) -> None:
 	xp_reward_range = (10, 60) if win else (0, 35)
 	print("The following players would be awarded the following amount of XP:")
 	for player in player_team + enemy_team:
-		prev_xp = player.get_xp()
+		prev_xp_thresh = player.xp_threshold
 		player.add_exp(amount := choose(list(range(*xp_reward_range))) * 10) # debugging
-		print(f"{player.name} - {amount} / {prev_xp}")
+		print(f"{player.name} - {amount} / {prev_xp_thresh}")
 		if (amount := choose(list(range(*xp_reward_range))) * 10) >= player.xp_threshold:
 			delay()
 			
@@ -1031,7 +1033,7 @@ def award(win : bool) -> None:
 
 
 def main() -> None:
-	global player_team, enemy_team, continue_data
+	global player_team, enemy_team, continue_data, players
 
 	load_data()
 	generate_seed()
@@ -1059,7 +1061,7 @@ def main() -> None:
 		save_file.write(str())
 
 
-	print("Done!")
+	print("\nDone!")
 	delay()
 
 	
@@ -1071,6 +1073,8 @@ def main() -> None:
 
 	while (again := input("Play again? (yes/no)\n").lower()) not in ("yes", "no"):
 		print("yes/no only!")
+
+	map(Player.refresh(), players)
 
 	if again == "yes":
 		print("\n\n\n\n\n"*10)
